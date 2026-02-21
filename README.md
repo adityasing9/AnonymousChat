@@ -36,16 +36,6 @@
 
 ---
 
-## 🖼 Preview
-
-> Add screenshots here for better GitHub presentation
-
-```
-/screenshots/chat-ui.png
-```
-
----
-
 ## 🛠 Tech Stack
 
 | Technology | Purpose |
