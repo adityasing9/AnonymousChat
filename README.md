@@ -1,33 +1,61 @@
-# 🕵️ Anonymous Chat App
+# 🕵️ Anonymous Chat
 
-A real-time anonymous chat application built with **Node.js, Express, and Socket.io**.
+<p align="center">
+  <b>Real-Time Anonymous Chat Application</b><br>
+  Built with Node.js, Express & Socket.io
+</p>
 
-🌍 **Live Demo:**  
-👉 https://anonymouschat-u853.onrender.com/
+<p align="center">
+  <a href="https://anonymouschat-u853.onrender.com/">
+    <img src="https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge" />
+  </a>
+  <img src="https://img.shields.io/badge/Node.js-18%2B-green?style=for-the-badge&logo=node.js" />
+  <img src="https://img.shields.io/badge/Socket.io-RealTime-black?style=for-the-badge&logo=socket.io" />
+  <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" />
+</p>
 
 ---
 
-## 🚀 Features
+## 🌍 Live Demo
+
+👉 **https://anonymouschat-u853.onrender.com/**
+
+---
+
+## ✨ Features
 
 - 💬 Real-time messaging (Socket.io)
 - 🕵️ Anonymous username system
 - 📱 Mobile-first WhatsApp-style UI
-- 🟢 Online users counter
+- 🟢 Live online user counter
 - ⌨️ Typing indicator
 - 🎙️ Voice message support
 - 📦 Installable as PWA (Add to Home Screen)
-- 🔔 Browser notifications
-- 🌍 Deployed on Render
+- 🔔 Browser notification support
+- 🌙 Clean modern UI
+
+---
+
+## 🖼 Preview
+
+> Add screenshots here for better GitHub presentation
+
+```
+/screenshots/chat-ui.png
+```
 
 ---
 
 ## 🛠 Tech Stack
 
-- **Frontend:** HTML, CSS, JavaScript  
-- **Backend:** Node.js, Express.js  
-- **Realtime Engine:** Socket.io  
-- **PWA:** Service Worker + Web Manifest  
-- **Hosting:** Render  
+| Technology | Purpose |
+|------------|----------|
+| Node.js | Backend runtime |
+| Express.js | Web server |
+| Socket.io | Real-time communication |
+| HTML/CSS/JS | Frontend |
+| Service Worker | PWA support |
+| Render | Deployment |
 
 ---
 
@@ -51,22 +79,22 @@ AnonymousChat/
 
 ---
 
-## ⚙️ Run Locally
+## ⚙️ Installation (Local Setup)
 
-### 1️⃣ Clone Repository
+### 1️⃣ Clone the repository
 
 ```bash
 git clone https://github.com/adityasing9/AnonymousChat.git
 cd AnonymousChat
 ```
 
-### 2️⃣ Install Dependencies
+### 2️⃣ Install dependencies
 
 ```bash
 npm install
 ```
 
-### 3️⃣ Start Server
+### 3️⃣ Run the server
 
 ```bash
 npm start
@@ -80,19 +108,19 @@ http://localhost:3000
 
 ---
 
-## 🌍 Deployment (Render)
+## 🚀 Deployment (Render)
 
-This project is deployed using **Render**.
+This project is deployed on **Render**.
 
-### Render Settings:
+### Render Configuration
 
 | Setting | Value |
 |----------|--------|
 | Environment | Node |
-| Build Command | npm install |
-| Start Command | npm start |
+| Build Command | `npm install` |
+| Start Command | `npm start` |
 
-Server uses dynamic port:
+### Dynamic Port Configuration
 
 ```js
 const PORT = process.env.PORT || 3000;
@@ -100,36 +128,54 @@ const PORT = process.env.PORT || 3000;
 
 ---
 
-## 📱 PWA Support
+## 📱 Progressive Web App (PWA)
 
-This app supports:
+Supports:
 
-- Add to Home Screen
-- Standalone app mode
-- App icon support
-- Offline-ready service worker
-- Notification permission support
+- Install on mobile & desktop
+- Standalone mode
+- Custom app icon
+- Service worker registration
+- Notification permission handling
 
 ---
 
-## 🔥 Future Improvements
+## 🔒 Future Improvements
 
-- 🔐 Private 1-to-1 chat  
-- 💾 Database message storage  
-- 🌍 Custom domain  
-- 🔔 Real background push notifications  
-- 👤 Authentication system  
+- 🔐 Private 1-to-1 chat rooms
+- 💾 MongoDB message storage
+- 🌍 Custom domain support
+- 🔔 Background push notifications
+- 👤 Authentication system
+- 🛡 Moderation tools
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repository
+2. Create a new branch
+3. Make your changes
+4. Submit a Pull Request
+
+---
+
+## 📜 License
+
+This project is licensed under the **MIT License**.
 
 ---
 
 ## 👨‍💻 Author
 
-Made with ❤️ by **Aadi Sing**
+**Aadi Sing**
 
-GitHub: https://github.com/adityasing9
+- GitHub: https://github.com/adityasing9
 
 ---
 
-## ⭐ If You Like This Project
-
-Give it a ⭐ on GitHub!
+<p align="center">
+  ⭐ If you like this project, consider giving it a star!
+</p>
