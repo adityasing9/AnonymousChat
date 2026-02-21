@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Anonymous Chat</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- PWA Manifest -->
+    
+
+    <link rel="icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            background: linear-gradient(to bottom, #075E54 0%, #128C7E 15%, #e5ddd5 15%, #e5ddd5 100%);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: #075E54;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .online {
+            font-size: 12px;
+            color: #25D366;
+        }
+
+        #messages {
+            flex: 1;
+            list-style: none;
+            padding: 15px;
+            margin: 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bubble {
+            padding: 10px 14px;
+            border-radius: 18px;
+            margin-bottom: 8px;
+            max-width: 70%;
+            font-size: 14px;
+            word-wrap: break-word;
+        }
+
+        .left {
+            background: white;
+            align-self: flex-start;
+        }
+
+        .right {
+            background: #DCF8C6;
+            align-self: flex-end;
+        }
+
+        .status {
+            text-align: center;
+            font-size: 12px;
+            color: gray;
+            margin: 5px 0;
+        }
+
+        .typing {
+            font-size: 12px;
+            color: gray;
+            padding-left: 10px;
+        }
+
+        .inputBox {
+            display: flex;
+            padding: 10px;
+            background: #f0f0f0;
+        }
+
+        .inputBox input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 20px;
+            border: none;
+            outline: none;
+        }
+
+        .inputBox button {
+            margin-left: 8px;
+            padding: 10px 15px;
+            border-radius: 50%;
+            border: none;
+            background: #075E54;
+            color: white;
+            cursor: pointer;
+        }
+
+        #login {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #075E54;
+        }
+
+        #login input {
+            padding: 12px;
+            border-radius: 25px;
+            border: none;
+            margin-bottom: 10px;
+        }
+
+        #login button {
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            background: #25D366;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="login">
+    <h2 style="color:white;">Anonymous Chat</h2>
+    <input id="username" placeholder="Enter Username">
+    <button onclick="joinChat()">Join</button>
+</div>
+
+<div id="chat" style="display:none; flex-direction:column; height:100vh;">
+    <div class="header">
+        <span>Anonymous Chat</span>
+        <span class="online">🟢 <span id="onlineCount">0</span> Online</span>
+    </div>
+
+    <ul id="messages"></ul>
+    <div id="typing" class="typing"></div>
+
+    <div class="inputBox">
+        <input id="msg" placeholder="Type message...">
+        <button onclick="startRecording()">🎙️</button>
+        <button onclick="sendMsg()">➤</button>
+    </div>
+</div>
+
+<script>
+    var socket = io();
+    var user = "";
+    var mediaRecorder;
+    var audioChunks = [];
+
+    function joinChat() {
+        user = document.getElementById("username").value.trim();
+        if (!user) return;
+
+        socket.emit("join", user);
+        document.getElementById("login").style.display = "none";
+        document.getElementById("chat").style.display = "flex";
+    }
+
+    socket.on("onlineCount", count => {
+        document.getElementById("onlineCount").innerText = count;
+    });
+
+    socket.on("message", data => {
+        addMessage(data.user + ": " + data.msg);
+    });
+
+    socket.on("status", msg => addStatus(msg));
+
+    socket.on("typing", username => {
+        document.getElementById("typing").innerText = username + " typing...";
+    });
+
+    socket.on("stopTyping", () => {
+        document.getElementById("typing").innerText = "";
+    });
+
+    function sendMsg() {
+        var text = document.getElementById("msg").value.trim();
+        if (!text) return;
+
+        socket.emit("message", { user: user, msg: text });
+        document.getElementById("msg").value = "";
+        socket.emit("stopTyping");
+    }
+
+    function addMessage(msg) {
+        var li = document.createElement("li");
+        li.className = "bubble";
+
+        if (msg.startsWith(user + ":"))
+            li.classList.add("right");
+        else
+            li.classList.add("left");
+
+        li.innerText = msg;
+        document.getElementById("messages").appendChild(li);
+        scrollDown();
+    }
+
+    function addStatus(msg) {
+        var div = document.createElement("div");
+        div.className = "status";
+        div.innerText = msg;
+        document.getElementById("messages").appendChild(div);
+        scrollDown();
+    }
+
+    function scrollDown() {
+        var messages = document.getElementById("messages");
+        messages.scrollTop = messages.scrollHeight;
+    }
+
+    document.getElementById("msg").addEventListener("input", () => {
+        socket.emit("typing", user);
+    });
+
+    document.getElementById("msg").addEventListener("keydown", e => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            sendMsg();
+        }
+    });
+
+    async function startRecording() {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+
+        mediaRecorder.start();
+        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+
+        mediaRecorder.onstop = () => {
+            const blob = new Blob(audioChunks, { type: "audio/webm" });
+            audioChunks = [];
+            addMessage(user + ": 🎙️ Voice Message");
+        };
+
+        setTimeout(() => mediaRecorder.stop(), 3000);
+    }
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js');
+    }
+    // Request notification permission
+function requestNotificationPermission() {
+    if ("Notification" in window) {
+        Notification.requestPermission().then(permission => {
+            console.log("Notification permission:", permission);
+        });
+    }
+}
+
+requestNotificationPermission();
+
+socket.on("message", data => {
+    addMessage(data.user + ": " + data.msg);
+
+    // 🔔 Show notification if message is from someone else
+    if (data.user !== user && document.hidden) {
+        if (Notification.permission === "granted") {
+            new Notification(data.user, {
+                body: data.msg,
+                icon: "/icon.png"
+            });
+        }
+    }
+});
+</script>
+
+</body>
+</html>
