@@ -36,6 +36,16 @@
 
 ---
 
+## 🖼 Preview
+
+> Add screenshots here for better GitHub presentation
+
+```
+/screenshots/chat-ui.png
+```
+
+---
+
 ## 🛠 Tech Stack
 
 | Technology | Purpose |
@@ -64,9 +74,7 @@ AnonymousChat/
 ├── favicon-96x96.png
 ├── apple-touch-icon.png
 ├── web-app-manifest-192x192.png
-├── web-app-manifest-512x512.png
-└── screenshots/
-    └── demo.gif
+└── web-app-manifest-512x512.png
 ```
 
 ---
@@ -96,52 +104,6 @@ Open in browser:
 
 ```
 http://localhost:3000
-```
-
----
-
-## 🧪 Testing
-
-### 🔹 Manual Testing Checklist
-
-- [ ] Open app in two different browsers
-- [ ] Verify real-time message delivery
-- [ ] Test typing indicator
-- [ ] Test voice message recording
-- [ ] Minimize tab → check notifications
-- [ ] Install PWA → test standalone mode
-- [ ] Check online user counter updates correctly
-
----
-
-### 🔹 Automated Testing (Optional Setup)
-
-You can add testing using **Jest** or **Supertest**.
-
-Install:
-
-```bash
-npm install --save-dev jest supertest
-```
-
-Example basic test (`server.test.js`):
-
-```js
-const request = require("supertest");
-const app = require("./server");
-
-describe("Server Test", () => {
-  it("should respond with status 200", async () => {
-    const res = await request(app).get("/");
-    expect(res.statusCode).toBe(200);
-  });
-});
-```
-
-Run tests:
-
-```bash
-npm test
 ```
 
 ---
